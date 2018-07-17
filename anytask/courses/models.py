@@ -120,8 +120,8 @@ class Course(models.Model):
 
     private = models.BooleanField(db_index=False, null=False, blank=False, default=True)
 
-    added_time = models.DateTimeField(auto_now_add=True, default=timezone.now)
-    update_time = models.DateTimeField(auto_now=True, default=timezone.now)
+    added_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
 
     can_be_chosen_by_extern = models.BooleanField(db_index=False, null=False, blank=False, default=False)
     group_with_extern = models.ForeignKey(
@@ -277,7 +277,7 @@ class StudentCourseMark(models.Model):
     mark = models.ForeignKey(MarkField, db_index=False, null=True, blank=True)
 
     teacher = models.ForeignKey(User, related_name='teacher_change_mark', db_index=False, null=True, blank=True)
-    update_time = models.DateTimeField(auto_now=True, default=timezone.now)
+    update_time = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return unicode(self.mark)

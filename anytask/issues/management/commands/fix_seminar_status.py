@@ -5,7 +5,7 @@ import time
 from optparse import make_option
 
 from django.core.management.base import BaseCommand
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from django.contrib.auth.models import User
 from django.db.models import Sum
 
@@ -41,7 +41,7 @@ class Command(BaseCommand):
         ),
     )
 
-    @commit_on_success
+    @atomic
     def handle(self, **options):
         start_time = time.time()
 

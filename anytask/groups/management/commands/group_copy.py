@@ -18,7 +18,7 @@ class Command(BaseCommand):
                     help='Group id'),
     )
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def handle(self, **options):
         group_id = options['group_id']
         if group_id:

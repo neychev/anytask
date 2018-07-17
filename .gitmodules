@@ -18,4 +18,10 @@
 	url = https://github.com/reviewboard/rbtools.git
 [submodule "django-filemanager"]
 	path = dependencies/django-filemanager
-	url = https://github.com/IMGIITRoorkee/django-filemanager.git
+	url = https://github.com/znick/django-filemanager.git
+[submodule "django-jfu"]
+	path = django-jfu
+	url = https://github.com/UmSenhorQualquer/django-jfu.git
+[submodule "dependencies/django-jfu"]
+	path = dependencies/django-jfu
+	url = https://github.com/UmSenhorQualquer/django-jfu.git

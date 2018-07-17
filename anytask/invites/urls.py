@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns(
-    'invites.views',
-    url(r'^generate_invites/$', 'generate_invites'),
-)
+from invites import views
+
+urlpatterns = [
+    url(r'^generate_invites/$', views.generate_invites),
+]

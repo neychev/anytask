@@ -16,7 +16,7 @@ import logging
 logger = logging.getLogger('django.request')
 
 
-class CustomMethodFilter(django_filters.MethodFilter):
+class CustomMethodFilter(django_filters.CharFilter):
     def __init__(self, *args, **kwargs):
         self.field_class = kwargs.pop('field_class', forms.Field)
 

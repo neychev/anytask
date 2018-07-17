@@ -1,8 +1,9 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns(
-    'search.views',
-    url(r'^$', 'search_page'),
-    url(r'^users$', 'ajax_search_users'),
-    url(r'^courses$', 'ajax_search_courses'),
-)
+from search import views
+
+urlpatterns = [
+    url(r'^$', views.search_page),
+    url(r'^users$', views.ajax_search_users),
+    url(r'^courses$', views.ajax_search_courses),
+]

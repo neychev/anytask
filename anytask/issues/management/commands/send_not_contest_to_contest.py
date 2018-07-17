@@ -6,7 +6,7 @@ import os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from django.db.transaction import commit_on_success
+from django.db.transaction import atomic
 from django.utils import translation
 
 from issues.models import Issue
@@ -39,7 +39,7 @@ class Command(BaseCommand):
 
     option_list = BaseCommand.option_list
 
-    @commit_on_success
+    @atomic
     def handle(self, *args, **options):
         start_time = time.time()
 

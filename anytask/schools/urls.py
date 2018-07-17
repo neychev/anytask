@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns(
-    'schools.views',
-    url(r'^(?P<school_link>\w+)$', 'school_page'),
-    url(r'^(?P<school_link>\w+)/archive$', 'archive_page'),
+from schools import views
 
-)
+urlpatterns = [
+    url(r'^(?P<school_link>\w+)$', views.school_page),
+    url(r'^(?P<school_link>\w+)/archive$', views.archive_page),
+]

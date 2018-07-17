@@ -15,7 +15,7 @@ class TaskBaseAdmin(admin.ModelAdmin):
     get_groups.short_description = 'Groups'
 
 
-class TaskAdmin(reversion.VersionAdmin, TaskBaseAdmin):
+class TaskAdmin(reversion.admin.VersionAdmin, TaskBaseAdmin):
     pass
 
 

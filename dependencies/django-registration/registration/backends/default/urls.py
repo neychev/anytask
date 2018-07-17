@@ -25,7 +25,7 @@ from registration.views import activate
 from registration.views import register
 
 
-urlpatterns = patterns('',
+urlpatterns = [
                        url(r'^activate/complete/$',
                            TemplateView.as_view(template_name='registration/activation_complete.html'),
                            name='registration_activation_complete'),
@@ -48,4 +48,4 @@ urlpatterns = patterns('',
                            TemplateView.as_view(template_name='registration/registration_closed.html'),
                            name='registration_disallowed'),
                        (r'', include('registration.auth_urls')),
-                       )
+]

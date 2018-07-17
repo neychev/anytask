@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns(
-    'anyrb.views',
-    url(r'^update/(?P<review_id>\d+)$', 'message_from_rb'),
-)
+from anyrb import views
+
+urlpatterns = [
+    url(r'^update/(?P<review_id>\d+)$', views.message_from_rb),
+]

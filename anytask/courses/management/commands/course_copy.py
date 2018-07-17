@@ -33,7 +33,7 @@ class Command(BaseCommand):
         ),
     )
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def handle(self, **options):
         course_id = options['course_id']
         if course_id:
