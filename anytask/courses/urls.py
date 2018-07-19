@@ -4,7 +4,7 @@ import views
 from courses.pythontask import get_task, cancel_task
 
 urlpatterns = [
-    url(r'^(?P<course_id>\d+)$', views.course_page),
+    url(r'^(?P<course_id>\d+)$', views.course_page, name='courses.views.course_page'),
     url(r'^(?P<course_id>\d+)/seminar/(?P<task_id>\d+)$', views.seminar_page),
     url(r'^(?P<course_id>\d+)/queue$', views.queue_page),
     url(r'^(?P<course_id>\d+)/gradebook/$', views.gradebook),

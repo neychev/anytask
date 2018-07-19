@@ -92,7 +92,7 @@ def activate(request, backend,
 
     return render_to_response(template_name,
                               kwargs,
-                              context_instance=context)
+                              context=context)
 
 
 def register(request, backend, success_url=None, form_class=None,
@@ -204,7 +204,7 @@ def register(request, backend, success_url=None, form_class=None,
 
     return render_to_response(template_name,
                               {'form': form},
-                              context_instance=context)
+                              context=context)
 
 
 def ajax_check_username(request):
