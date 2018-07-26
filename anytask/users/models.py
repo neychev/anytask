@@ -7,6 +7,8 @@ from courses.models import Course
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
+from django.urls import reverse
+
 from groups.models import Group
 from mail.models import Message
 from users.model_user_status import UserStatus
@@ -20,6 +22,10 @@ logger = logging.getLogger('django.request')
 def get_upload_path(instance, filename):
     return os.path.join('images', 'user_%d' % instance.user.id, filename)
 
+
+def user_get_absolute_url(instance):
+    return reverse('users.views.profile', args=[instance.username])
+User.get_absolute_url = user_get_absolute_url
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, db_index=True, null=False, blank=False, unique=True, related_name='profile', on_delete=models.CASCADE)

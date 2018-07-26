@@ -4,8 +4,7 @@ Views which allow users to create and activate accounts.
 """
 
 
-from django.shortcuts import redirect
-from django.shortcuts import render_to_response
+from django.shortcuts import redirect, render
 from django.template import RequestContext
 from django.http import HttpResponse
 
@@ -86,13 +85,13 @@ def activate(request, backend,
 
     if extra_context is None:
         extra_context = {}
-    context = RequestContext(request)
+    context = {}
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
 
-    return render_to_response(template_name,
-                              kwargs,
-                              context=context)
+    context.update(kwargs)
+
+    return render(request, template_name, context)
 
 
 def register(request, backend, success_url=None, form_class=None,
@@ -198,13 +197,13 @@ def register(request, backend, success_url=None, form_class=None,
     
     if extra_context is None:
         extra_context = {}
-    context = RequestContext(request)
+    context = {}
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
 
-    return render_to_response(template_name,
-                              {'form': form},
-                              context=context)
+    context['form'] = form
+
+    return render(request, template_name, context)
 
 
 def ajax_check_username(request):
