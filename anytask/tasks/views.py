@@ -11,8 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.utils.timezone import make_aware
 from django.db.models import Sum
@@ -62,11 +61,11 @@ def task_create_page(request, course_id):
         'rb_integrated': course.rb_integrated,
         'hide_contest_settings': True if not course.contest_integrated else False,
         'school': schools[0] if schools else '',
-        'user_location': request.user.get_profile().location,
+        'user_location': request.user.profile.location,
         'geo_suggest_url': settings.GEO_SUGGEST_URL
     }
 
-    return render_to_response('task_create.html', context, context_instance=RequestContext(request))
+    return render(request, 'task_create.html', context)
 
 
 @login_required
@@ -86,11 +85,11 @@ def task_import_page(request, course_id):
         'rb_integrated': course.rb_integrated,
         'school': schools[0] if schools else '',
         'seminar_tasks': seminar_tasks,
-        'user_location': request.user.get_profile().location,
+        'user_location': request.user.profile.location,
         'geo_suggest_url': settings.GEO_SUGGEST_URL
     }
 
-    return render_to_response('task_import.html', context, context_instance=RequestContext(request))
+    return render(request, 'task_import.html', context)
 
 
 @login_required
@@ -111,11 +110,11 @@ def contest_import_page(request, course_id):
         'seminar_tasks': seminar_tasks,
         'school': schools[0] if schools else '',
         'contest_import': True,
-        'user_location': request.user.get_profile().location,
+        'user_location': request.user.profile.location,
         'geo_suggest_url': settings.GEO_SUGGEST_URL
     }
 
-    return render_to_response('contest_import.html', context, context_instance=RequestContext(request))
+    return render(request, 'contest_import.html', context)
 
 
 @login_required
@@ -157,11 +156,11 @@ def task_edit_page(request, task_id):
         'hide_contest_settings': True if not task.contest_integrated or task.type in [task.TYPE_SIMPLE,
                                                                                       task.TYPE_MATERIAL] else False,
         'school': schools[0] if schools else '',
-        'user_location': request.user.get_profile().location,
+        'user_location': request.user.profile.location,
         'geo_suggest_url': settings.GEO_SUGGEST_URL
     }
 
-    return render_to_response('task_edit.html', context, context_instance=RequestContext(request))
+    return render(request, 'task_edit.html', context)
 
 
 def get_task_params(request, check_score_after_deadline=False):
@@ -234,7 +233,7 @@ def get_task_params(request, check_score_after_deadline=False):
 
 def task_create_or_edit(request, course, task_id=None):
     params = get_task_params(request, course.issue_status_system.has_accepted_after_deadline())
-    lang = request.user.get_profile().language
+    lang = request.user.profile.language
 
     changed_score_after_deadline = False
     if task_id:
@@ -323,7 +322,7 @@ def get_contest_problems(request):
     if request.method != 'POST':
         return HttpResponseForbidden()
 
-    lang = request.user.get_profile().language
+    lang = request.user.profile.language
     course = get_object_or_404(Course, id=request.POST['course_id'])
 
     if not course.user_can_edit_course(request.user):
@@ -358,7 +357,7 @@ def get_contest_problems(request):
         if 'endTime' in contest_info:
             deadline_msk = datetime.datetime.strptime(contest_info['endTime'][:-9], '%Y-%m-%dT%H:%M:%S')
             contest_info_deadline = convert_datetime(deadline_msk, settings.CONTEST_TIME_ZONE,
-                                                     request.user.get_profile().time_zone)
+                                                     request.user.profile.time_zone)
             contest_info_deadline = contest_info_deadline.strftime('%Y,%m,%d,%H,%M')
         else:
             contest_info_deadline = None
@@ -455,4 +454,4 @@ def get_task_text_popup(request, task_id):
         'task': task,
     }
 
-    return render_to_response('task_text_popup.html', context, context_instance=RequestContext(request))
+    return render(request, 'task_text_popup.html', context)
