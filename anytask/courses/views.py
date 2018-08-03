@@ -627,7 +627,7 @@ def course_settings(request, course_id):
         form = DefaultTeacherForm(course)
         context['form'] = form
         context['file_extensions'] = get_filename_extensions(course)
-        return render_to_response(request, 'courses/settings.html', context)
+        return render(request, 'courses/settings.html', context)
 
     form = DefaultTeacherForm(course, request.POST)
     context['form'] = form

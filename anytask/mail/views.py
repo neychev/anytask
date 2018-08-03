@@ -2,7 +2,7 @@
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils import timezone
@@ -40,7 +40,7 @@ MONTH = {
 @login_required
 def mail_page(request):
     user = request.user
-    user_profile = user.get_profile()
+    user_profile = user.profile
 
     users_from_staff_len = {}
     if user.is_staff and 'from_staff' in request.GET and 'user_ids_send_mail_counter' in request.session:
@@ -65,7 +65,7 @@ def mail_page(request):
         "snow_alert_message_fulltext": hasattr(settings, 'SEND_MESSAGE_FULLTEXT') and settings.SEND_MESSAGE_FULLTEXT,
     }
 
-    return render_to_response('mail.html', context, context_instance=RequestContext(request))
+    return render(request, 'mail.html', context)
 
 
 @require_GET
@@ -73,7 +73,7 @@ def mail_page(request):
 def ajax_get_mailbox(request):
     response = dict()
     user = request.user
-    user_profile = user.get_profile()
+    user_profile = user.profile
 
     datatable_data = dict(request.GET)
 
@@ -164,7 +164,7 @@ def format_date(date):
 def ajax_get_message(request):
     response = dict()
     user = request.user
-    user_profile = user.get_profile()
+    user_profile = user.profile
 
     if "msg_id" not in request.GET:
         return HttpResponseForbidden()
@@ -224,7 +224,7 @@ def ajax_get_message(request):
         "id": message.sender.id,
         "fullname": u'%s %s' % (message.sender.last_name, message.sender.first_name),
         "url": message.sender.get_absolute_url(),
-        "avatar": message.sender.get_profile().avatar.url if message.sender.get_profile().avatar else "",
+        "avatar": message.sender.profile.avatar.url if message.sender.profile.avatar else "",
     }
     response['recipients_user'] = recipients_user
     response['recipients_group'] = recipients_group

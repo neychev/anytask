@@ -30,7 +30,7 @@ class Message(models.Model):
         return u'%s %s' % (self.sender.username, self.title)
 
     def read_message(self, user):
-        user_profile = user.get_profile()
+        user_profile = user.profile
         user_profile.unread_messages.remove(self)
         user_profile.send_notify_messages.remove(self)
 
@@ -41,7 +41,7 @@ class Message(models.Model):
 def make_unread_msg(sender, instance, action, **kwargs):
     if action in ["post_add", "post_remove"]:
         for user in instance.recipients.all():
-            user_profile = user.get_profile()
+            user_profile = user.profile
             user_profile.unread_messages.add(instance)
             user_profile.send_notify_messages.add(instance)
 
