@@ -8,8 +8,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
-from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.template.context import RequestContext
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from jfu.http import upload_receive, UploadResponse, JFUResponse
@@ -59,7 +58,7 @@ def prepare_info_fields(info_fields, request, issue):
                  }
 
     user = request.user
-    lang = user.get_profile().language
+    lang = user.profile.language
     for field in info_fields:
         field.editable = field.can_edit(user, issue)
         if field.is_visible():
@@ -195,7 +194,7 @@ def issue_page(request, issue_id):
                 show_top_alert = True
             break
 
-    lang = user.get_profile().language
+    lang = user.profile.language
     statuses_accepted = [(status.id, status.get_name(lang))
                          for status in issue.task.course.issue_status_system.get_accepted_statuses()]
 
@@ -238,7 +237,7 @@ def issue_page(request, issue_id):
         'max_files_number': getattr(settings, 'MAX_FILES_NUMBER', 10)
     }
 
-    return render_to_response('issues/issue.html', context, context_instance=RequestContext(request))
+    return render(request, 'issues/issue.html', context)
 
 
 @login_required

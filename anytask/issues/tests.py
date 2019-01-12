@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
 from django.contrib.auth.models import User
 from schools.models import School
@@ -37,6 +30,7 @@ class CreateTest(TestCase):
                                        year=year)
         course.groups = [group]
         course.save()
+
         task = Task.objects.create(title='task',
                                    course=course)
         student = User.objects.create_user(username='student',
@@ -595,7 +589,7 @@ class ViewsTest(TestCase):
 
         issue = Issue.objects.create(task_id=self.task.id, student_id=self.student.id)
         # post
-        response = client.post(reverse('issues.views.upload'),
+        response = client.post(reverse('jfu_upload'),
                                {'comment': 'test_comment',
                                 'files[]': '',
                                 'issue_id': str(issue.id),
@@ -705,7 +699,7 @@ class ViewsTest(TestCase):
 
         issue = Issue.objects.create(task_id=self.task.id, student_id=self.student.id)
         # post
-        response = client.post(reverse('issues.views.upload'),
+        response = client.post(reverse('jfu_upload'),
                                {'comment': 'test_comment',
                                 'files[]': '',
                                 'issue_id': str(issue.id),
@@ -741,7 +735,7 @@ class ViewsTest(TestCase):
         # post comment via teacher
         self.task.deadline_time = datetime.now() - timedelta(days=5)
         self.task.save()
-        response = client.post(reverse('issues.views.upload'),
+        response = client.post(reverse('jfu_upload'),
                                {'comment': 'test_comment_teacher',
                                 'files[]': '',
                                 'issue_id': str(issue.id),
@@ -766,7 +760,7 @@ class ViewsTest(TestCase):
                         "Can't login via student")
 
         # post comment via student
-        response = client.post(reverse('issues.views.upload'),
+        response = client.post(reverse('jfu_upload'),
                                {'comment': 'test_comment_student',
                                 'files[]': '',
                                 'issue_id': str(issue.id),
@@ -831,7 +825,7 @@ class ViewsTest(TestCase):
 
         # post rb error
         mock_upload_review.return_value = None
-        response = client.post(reverse('issues.views.upload'),
+        response = client.post(reverse('jfu_upload'),
                                {'comment': 'test_comment',
                                 'files[]': '',
                                 'pk_test_rb.py': '1',
@@ -868,7 +862,7 @@ class ViewsTest(TestCase):
 
         # post rb no error
         mock_upload_review.return_value = 1
-        response = client.post(reverse('issues.views.upload'),
+        response = client.post(reverse('jfu_upload'),
                                {'comment': 'test_comment',
                                 'files[]': '',
                                 'pk_test_rb.py': '1',

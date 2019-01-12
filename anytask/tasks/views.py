@@ -17,7 +17,7 @@ from django.utils.timezone import make_aware
 from django.db.models import Sum
 
 from anycontest.common import get_contest_info
-from common.timezone import get_datetime_with_tz, convert_datetime
+from anytask_common.timezone import get_datetime_with_tz, convert_datetime
 from courses.models import Course
 from groups.models import Group
 from issues.model_issue_status import IssueStatus

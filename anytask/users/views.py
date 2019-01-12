@@ -25,7 +25,7 @@ from issues.model_issue_status import IssueStatus
 from tasks.models import Task
 from schools.models import School
 from users.forms import InviteActivationForm
-from anytask.common.timezone import get_tz
+from anytask_common.timezone import get_tz
 from pytz import timezone as timezone_pytz
 
 from years.common import get_current_year

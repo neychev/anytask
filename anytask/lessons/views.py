@@ -6,7 +6,7 @@ import uuid
 
 import reversion
 from courses.models import Course
-from common.timezone import get_datetime_with_tz
+from anytask_common.timezone import get_datetime_with_tz
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseForbidden

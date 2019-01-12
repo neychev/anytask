@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
 
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -14,7 +8,6 @@ from courses.models import Course
 from groups.models import Group
 from years.models import Year
 from tasks.models import Task, TaskGroupRelations
-from issues.model_issue_status import IssueStatusSystem, IssueStatus
 
 from mock import patch
 from BeautifulSoup import BeautifulSoup
@@ -119,16 +112,6 @@ class ViewsTest(TestCase):
                                         course=self.course,
                                         score_max=15)
         self.task.set_position_in_new_group()
-
-        def add_status(iss, tag):
-            status, created = IssueStatus.objects.get_or_create(tag=tag)
-            iss.statuses.add(status)
-
-        iss = IssueStatusSystem.objects.create(name='default')
-
-        add_status(iss, IssueStatus.STATUS_VERIFICATION)
-        add_status(iss, IssueStatus.STATUS_REWORK)
-        add_status(iss, IssueStatus.STATUS_ACCEPTED)
 
     def test_task_create_page_anonymously(self):
         client = self.client

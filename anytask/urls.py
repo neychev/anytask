@@ -3,6 +3,7 @@ from django.conf import settings
 from django.views.generic.base import TemplateView
 import django.contrib.auth.views
 import django.views
+from django.views.static import serve
 
 import users.views
 import index.views
@@ -19,17 +20,17 @@ urlpatterns = [
     url(r'^school/', include('schools.urls')),
     url(r'^task/', include('tasks.urls')),
     url(r'^user/', include('users.urls')),
-    url(r'^users/(?P<username>.*)/', users.views.users_redirect),
+    url(r'^users/(?P<username>.*)/', users.views.users_redirect, name='users.views.profile'), # name='users.views.users_redirect'),
     url(r'^setlanguage/', users.views.set_user_language),
     url(r'^invites/', include('invites.urls')),
     url(r'^anyrb/', include('anyrb.urls')),
     url(r'^accounts/logout/$', django.contrib.auth.views.logout, {'next_page': '/'}, name='django.contrib.auth.views.logout'),
     url(r'^accounts/profile/(?P<username>.*)/(?P<year>\d+)', users.views.profile, name='users.views.profile'),
-    url(r'^accounts/profile/(?P<username>.*)', users.views.profile, name='users.views.profile'),
+    url(r'^accounts/profile/(?P<username>.*)', users.views.profile),
     url(r'^accounts/profile', users.views.profile, name='users.views.profile'),
     url(r'^accounts/', include('registration.backends.default_with_names.urls')),
-    url(r'^static/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.STATIC_ROOT}),
-    url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^about$', TemplateView.as_view(template_name='about.html')),
     url(r'^$', index.views.index),
     url(r'^search/', include('search.urls')),

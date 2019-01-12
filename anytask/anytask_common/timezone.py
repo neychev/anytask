@@ -2,10 +2,10 @@
 import datetime
 import requests
 from pytz import timezone
-from django.conf import settings
-
+#from django.conf import settings
 
 def get_tz(geoid):
+    from django.conf import settings
     if settings.USE_LOCAL_GEOBASE:
         return settings.DB.regionById(int(geoid)).as_dict['tzname']
 
@@ -18,7 +18,11 @@ def get_tz(geoid):
         return settings.TIME_ZONE
 
 
-def convert_datetime(date_time, from_time_zone, to_time_zone=settings.TIME_ZONE):
+def convert_datetime(date_time, from_time_zone, to_time_zone=None):
+    if to_time_zone is None:
+        from django.conf import settings
+        to_time_zone = settings.TIME_ZONE
+
     return timezone(from_time_zone).localize(date_time.replace(tzinfo=None)).\
         astimezone(timezone(to_time_zone))
 
