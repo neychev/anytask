@@ -43,4 +43,5 @@ urlpatterns = [
     url(r'^shad2017/decline/(?P<activation_key>\w+)/', admission.views.decline),
     url(r'^lesson/', include('lessons.urls')),
     url(r'^api/', include('api.urls')),
+    url(r'^jupyter/', include('jupyter.urls')),
 ]

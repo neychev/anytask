@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^get_contest_problems', views.get_contest_problems, name='tasks.views.get_contest_problems'),
     url(r'^contest_task_import', views.contest_task_import, name='tasks.views.contest_task_import'),
     url(r'^popup/(?P<task_id>\d+)$', views.get_task_text_popup),
+    url(r'^validate/nb_assignment_name', views.validate_nb_assignment_name),
 ]

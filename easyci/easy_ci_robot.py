@@ -21,6 +21,7 @@ CONFIG = "config.json"
 PASSWORDS = "passwords.json"
 MAX_COMMENT_SIZE = 100000
 PROCS = 2
+REQUEST_TIMEOUT = 180
 
 logging.basicConfig(format="%(asctime)-15s %(name)s %(process)d %(message)s", level=logging.DEBUG)
 
@@ -75,7 +76,7 @@ def proccess_task(qtask):
     with tmp_dir() as dirname:
         prepare_dir(qtask, dirname)
 
-        run_cmd = [qtask.course["run_cmd"], qtask.task["title"], "/task_dir/task"]
+        run_cmd = qtask.course["run_cmd"] + [qtask.task["title"], "/task_dir/task"]
         #run_cmd = ["ls", "/task_dir/task"]
         ret = docker.execute(run_cmd, cwd="/task_dir/git", timeout=qtask.course["timeout"], user='root',
                              network='bridge', image=qtask.course["docker_image"],
@@ -103,7 +104,7 @@ def proccess_task(qtask):
                                                                                      output)
 
         response = requests.post("{}/api/v1/issue/{}/add_comment".format(qtask.host, qtask.issue["id"]),
-                                auth=qtask.auth, data={"comment":comment.encode("utf-8")})
+                                 auth=qtask.auth, data={"comment":comment.encode("utf-8")}, timeout=REQUEST_TIMEOUT)
         response.raise_for_status()
         logging.info(" == Task %d DONE!, URL: %s/issue/%d", qtask.id, qtask.host, qtask.issue["id"])
         return qtask
@@ -126,7 +127,7 @@ def make_queue(config, passwords):
         course_id = course["course_id"]
         auth = get_auth(passwords, course["host"])
         response = requests.get("{}/api/v1/course/{}/issues?add_events=1".format(course["host"], course_id),
-                                auth=auth)
+                                auth=auth, timeout=REQUEST_TIMEOUT)
         if response.status_code != 200:
             logging.error("Course %d has non-200 reply. Skipped", course["id"])
             continue

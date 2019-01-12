@@ -74,11 +74,11 @@ def prepare_info_fields(info_fields, request, issue):
 def contest_rejudge(issue):
     got_verdict_submissions = issue.contestsubmission_set.filter(got_verdict=True)
 
-    if not (got_verdict_submissions.count() and
-            issue.contestsubmission_set.count() ==
-            (
-                got_verdict_submissions.count() +
-                issue.contestsubmission_set.exclude(send_error__isnull=True).exclude(send_error="").count())
+    if not (got_verdict_submissions.count()
+            and issue.contestsubmission_set.count()
+            == (
+                got_verdict_submissions.count()
+                + issue.contestsubmission_set.exclude(send_error__isnull=True).exclude(send_error="").count())
             ):
         return
 
@@ -233,6 +233,7 @@ def issue_page(request, issue_id):
         'show_contest_rejudge': show_contest_rejudge,
         'show_contest_rejudge_loading': show_contest_rejudge_loading,
         'show_contest_run_id': issue.task.course.user_can_see_contest_run_id(request.user),
+        'jupyterhub_url': getattr(settings, 'JUPYTERHUB_URL', ''),
         'max_file_size': getattr(settings, 'MAX_FILE_SIZE', 1024 * 1024 * 100),
         'max_files_number': getattr(settings, 'MAX_FILES_NUMBER', 10)
     }
